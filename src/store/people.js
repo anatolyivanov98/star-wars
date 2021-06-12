@@ -53,7 +53,6 @@ export default {
         methods: 'GET'
       })
         .then(resp => {
-          console.log(resp.data)
           commit('setPersonHomeworld', resp.data)
         })
     }

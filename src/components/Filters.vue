@@ -5,25 +5,46 @@
           class="filters__filter__name"
           type="text"
           placeholder="Введите имя..."
+          v-model="filterName"
+          @input="filterPersonHandler"
       >
     </div>
     <div class="filters__filter">
-      <div class="filters__filter">
-        <select class="filters__filter__gender">
-          <option value="male">Male</option>
-          <option value="female">Female</option>
-          <option value="female">n/a</option>
-        </select>
-        <button class="green__btn">Применить</button>
-        <button class="red__btn">Сбросить фильтры</button>
-      </div>
+      <select class="filters__filter__gender"
+              v-model="filterGender"
+              @change="filterPersonHandler"
+      >
+        <option value="all" selected>All</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+        <option value="n/a">n/a</option>
+        <option value="none">None</option>
+        <option value="hermaphrodite">Hermaphrodite</option>
+      </select>
+      <button class="red__btn" @click="resetFilterPersonHandler">Сбросить фильтры</button>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: "Filters"
+  name: "Filters",
+  data() {
+    return {
+      filterName: '',
+      filterGender: 'all'
+    }
+  },
+  methods: {
+    filterPersonHandler() {
+      this.$emit('filterPersonHandler', this.filterName, this.filterGender)
+    },
+    resetFilterPersonHandler() {
+      this.filterName = ''
+      this.filterGender = 'all'
+      this.filterPersonHandler()
+    }
+  }
 }
 </script>
 
@@ -39,7 +60,7 @@ $grey: #cecece;
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 10px 0 10px 40px;
+      padding: 10px 0 10px 20px;
 
       button {
         border: 3px solid $grey;
@@ -47,7 +68,7 @@ $grey: #cecece;
         background: #ffffff;
         font-size: 18px;
         color: #000;
-        margin-left: 10px;
+        margin-left: 20px;
         cursor: pointer;
         outline: none;
       }

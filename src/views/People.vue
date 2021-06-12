@@ -8,17 +8,16 @@
         @prevPageHandler="prevPageHandler()"
         @nextPageHandler="nextPageHandler()"
       />
-      <Filters />
+      <Filters
+        @filterPersonHandler="filterPerson"
+      />
     </div>
 
     <Preloader v-if="isLoading"/>
 
-    <div
-      v-else
-      class="carts"
-    >
+    <div v-else class="carts">
       <Person
-          v-for="person of peopleArray"
+          v-for="person of filteredPeople"
           :person="person"
           :key="person.name"
       />
@@ -42,10 +41,13 @@ export default {
   data() {
     return {
       peopleArray: [],
+      filteredPeople: [],
       currentPage: 1,
       isLoading: true,
       prevPage: '',
-      nextPage: ''
+      nextPage: '',
+      filterName: '',
+      filterGender: ''
     }
   },
   components: {
@@ -62,6 +64,7 @@ export default {
       this.peopleArray = this.getPeopleArray
       this.prevPage = this.getPrevPage
       this.nextPage = this.getNextPage
+      this.filterPerson()
       this.isLoading = false
     },
     async prevPageHandler() {
@@ -71,6 +74,39 @@ export default {
     async nextPageHandler() {
       this.currentPage = this.currentPage + 1
       await this.getPeopleData()
+    },
+    filterPerson(filterName, filterGender) {
+      if (filterName !== undefined) {
+        this.filterName = filterName
+      }
+      if (filterGender !== undefined) {
+        this.filterGender = filterGender
+      }
+
+      if (this.filterName === '' && this.filterGender === 'all') {
+        this.filteredPeople = this.peopleArray
+        return
+      }
+
+      if (this.filterName !== '' && this.filterGender === 'all') {
+        this.filteredPeople = this.peopleArray.filter(person => person.name.toLowerCase().includes(this.filterName.toLowerCase()))
+        return
+      }
+
+      if (this.filterName === '' && this.filterGender !== 'all' && this.filterGender !== '') {
+        this.filteredPeople = this.peopleArray.filter(person => person.gender === this.filterGender)
+        return
+      }
+
+      if (this.filterName && this.filterGender !== 'all') {
+        this.filteredPeople = this.peopleArray
+            .filter(person => person.gender === this.filterGender)
+            .filter(person => person.name.toLowerCase().includes(this.filterName.toLowerCase()))
+
+        return
+      }
+
+      this.filteredPeople = this.peopleArray
     }
   },
   computed: {
@@ -89,7 +125,7 @@ $grey: #cecece;
 
     .toolbar {
       display: flex;
-      justify-content: space-around;
+      justify-content: space-between;
       align-items: center;
       padding: 20px 40px;
       box-shadow: 0 5px 5px $grey;
