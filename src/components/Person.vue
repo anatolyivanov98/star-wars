@@ -3,12 +3,13 @@
     <img
         class="person__img"
         :src="`https://starwars-visualguide.com/assets/img/characters/${getPersonId}.jpg`"
+        :alt="`${person.name}`"
     />
     <div class="person__block">
       <div class="person__block__info">
         <p>Name: {{ person.name }}</p>
         <p>Gender: {{ person.gender }}</p>
-        <p>Homeworld: </p>
+        <p>Homeworld: {{ homeworld.name }}</p>
       </div>
       <button class="person__block__btn">
         <img src="@/assets/unlike.svg" alt="" />
@@ -18,15 +19,30 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
+
 export default {
   name: "Person",
   props: ['person'],
+  data() {
+    return {
+      homeworld: []
+    }
+  },
   computed: {
+    ...mapGetters(['getHomeworld']),
     getPersonId() {
       const splitPersonUrl = this.person.url.split('/')
       const personId = splitPersonUrl[splitPersonUrl.length - 2]
       return personId
     }
+  },
+  methods: {
+    ...mapActions(['getPersonHomeworld'])
+  },
+  async created() {
+    await this.getPersonHomeworld(this.person.homeworld)
+    this.homeworld = this.getHomeworld
   }
 }
 </script>

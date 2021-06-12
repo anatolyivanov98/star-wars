@@ -4,7 +4,8 @@ export default {
   state: {
     peopleArray: [],
     prevPage: false,
-    nextPage: true
+    nextPage: true,
+    homeworld: []
   },
   mutations: {
     setPeopleArray(state, array) {
@@ -23,6 +24,9 @@ export default {
       } else {
         state.nextPage = false
       }
+    },
+    setPersonHomeworld(state, array) {
+      state.homeworld = array
     }
   },
   actions: {
@@ -34,10 +38,23 @@ export default {
           page: currentPage
         }
       })
+      .then(resp => {
+        commit('setPeopleArray', resp.data.results)
+        commit('setPrevPage', resp.data.previous)
+        commit('setNextPage', resp.data.next)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    },
+    async getPersonHomeworld({dispatch, commit}, url) {
+      await axios({
+        url: url,
+        methods: 'GET'
+      })
         .then(resp => {
-          commit('setPeopleArray', resp.data.results)
-          commit('setPrevPage', resp.data.previous)
-          commit('setNextPage', resp.data.next)
+          console.log(resp.data)
+          commit('setPersonHomeworld', resp.data)
         })
     }
   },
@@ -50,6 +67,9 @@ export default {
     },
     getNextPage(state) {
       return state.nextPage
+    },
+    getHomeworld(state) {
+      return state.homeworld
     }
   }
 }
