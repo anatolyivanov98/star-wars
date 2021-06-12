@@ -2,14 +2,26 @@
   <main class="main">
 
     <div class="toolbar">
-      <Paginate />
+      <Paginate
+        :prevPage="prevPage"
+        :nextPage="nextPage"
+        @prevPageHandler="prevPageHandler()"
+        @nextPageHandler="nextPageHandler()"
+      />
       <Filters />
     </div>
 
-    <Preloader />
+    <Preloader v-if="isLoading"/>
 
-    <div class="carts">
-      <Person v-for="item of arrTest" />
+    <div
+      v-else
+      class="carts"
+    >
+      <Person
+          v-for="person of peopleArray"
+          :person="person"
+          :key="person.name"
+      />
     </div>
 
   </main>
@@ -23,11 +35,17 @@ import Paginate from "../components/Paginate";
 import Filters from "../components/Filters";
 import Person from "../components/Person";
 
+import { mapGetters, mapActions } from 'vuex'
+
 export default {
   name: 'People',
   data() {
     return {
-      arrTest: [1,2,3,4,5,6,7,8,9,10]
+      peopleArray: [],
+      currentPage: 1,
+      isLoading: true,
+      prevPage: '',
+      nextPage: ''
     }
   },
   components: {
@@ -35,6 +53,31 @@ export default {
     Filters,
     Preloader,
     Paginate
+  },
+  methods: {
+    ...mapActions(['getPeople']),
+    async getPeopleData() {
+      this.isLoading = true,
+      await this.getPeople(this.currentPage)
+      this.peopleArray = this.getPeopleArray
+      this.prevPage = this.getPrevPage
+      this.nextPage = this.getNextPage
+      this.isLoading = false
+    },
+    async prevPageHandler() {
+      this.currentPage = this.currentPage - 1
+      await this.getPeopleData()
+    },
+    async nextPageHandler() {
+      this.currentPage = this.currentPage + 1
+      await this.getPeopleData()
+    }
+  },
+  computed: {
+    ...mapGetters(['getPeopleArray', 'getPrevPage', 'getNextPage'])
+  },
+  async mounted() {
+    await this.getPeopleData()
   }
 }
 </script>

@@ -1,13 +1,41 @@
 <template>
   <div class="pagination">
-    <button class="pagination__prev"><img src="../assets/arrow.svg" alt="Предыдущая"></button>
-    <button class="pagination__next"><img src="../assets/arrow.svg" alt="Следующая"></button>
+    <button
+        class="pagination__prev"
+        :class="{ disabled: !prevPage }"
+        :disabled="!prevPage"
+        @click="prevPageHandler"
+    >
+      <img src="../assets/arrow.svg" alt="Предыдущая">
+    </button>
+    <button
+        class="pagination__next"
+        :class="{ disabled: !nextPage }"
+        :disabled="!nextPage"
+        @click="nextPageHandler"
+    >
+      <img src="../assets/arrow.svg" alt="Следующая">
+    </button>
   </div>
 </template>
 
 <script>
 export default {
-  name: "Paginate"
+  name: "Paginate",
+  props: ['prevPage','nextPage'],
+  data() {
+    return {
+
+    }
+  },
+  methods: {
+    prevPageHandler() {
+      this.$emit('prevPageHandler')
+    },
+    nextPageHandler() {
+      this.$emit('nextPageHandler')
+    }
+  }
 }
 </script>
 
@@ -43,6 +71,10 @@ $grey: #cecece;
       img {
         transform: rotate(180deg);
       }
+    }
+
+    .disabled {
+      background: $grey;
     }
   }
 

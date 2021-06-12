@@ -1,11 +1,14 @@
 <template>
   <div class="person">
-    <img class="person__img" src="https://starwars-visualguide.com/assets/img/characters/1.jpg" />
+    <img
+        class="person__img"
+        :src="`https://starwars-visualguide.com/assets/img/characters/${getPersonId}.jpg`"
+    />
     <div class="person__block">
       <div class="person__block__info">
-        <p>Name: test</p>
-        <p>Gender: test</p>
-        <p>Homeworld: test</p>
+        <p>Name: {{ person.name }}</p>
+        <p>Gender: {{ person.gender }}</p>
+        <p>Homeworld: </p>
       </div>
       <button class="person__block__btn">
         <img src="@/assets/unlike.svg" alt="" />
@@ -16,7 +19,15 @@
 
 <script>
 export default {
-  name: "Person"
+  name: "Person",
+  props: ['person'],
+  computed: {
+    getPersonId() {
+      const splitPersonUrl = this.person.url.split('/')
+      const personId = splitPersonUrl[splitPersonUrl.length - 2]
+      return personId
+    }
+  }
 }
 </script>
 
