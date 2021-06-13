@@ -1,13 +1,13 @@
 <template>
   <div class="person-favorite">
-    <img class="person-favorite__img" src="https://starwars-visualguide.com/assets/img/characters/1.jpg" />
+    <img class="person-favorite__img" :src="`https://starwars-visualguide.com/assets/img/characters/${getPersonId}.jpg`" />
     <div class="person-favorite__block">
       <div class="person-favorite__block__info">
-        <p>Name: test</p>
-        <p>Gender: test</p>
-        <p>Homeworld: test</p>
+        <p>Name: {{ favoritePerson.name }}</p>
+        <p>Gender: {{ favoritePerson.gender }}</p>
+        <p>Homeworld: {{ favoritePerson.homeworld }}</p>
       </div>
-      <button class="person-favorite__block__btn">
+      <button class="person-favorite__block__btn" @click="removeFavoritePersonHandler">
         <img src="@/assets/like.svg" alt="" />
       </button>
     </div>
@@ -16,7 +16,20 @@
 
 <script>
 export default {
-  name: "FavoritePerson"
+  name: "FavoritePerson",
+  props: ['favoritePerson'],
+  computed: {
+    getPersonId() {
+      const splitPersonUrl = this.favoritePerson.url.split('/')
+      const personId = splitPersonUrl[splitPersonUrl.length - 2]
+      return personId
+    }
+  },
+  methods: {
+    removeFavoritePersonHandler() {
+      this.$emit('removeFavoritePersonHandler', this.favoritePerson)
+    }
+  }
 }
 </script>
 
@@ -27,6 +40,7 @@ $grey: #cecece;
   display: flex;
   flex-direction: column;
   margin-top: 20px;
+  margin-right: 5%;
   transition:.3s all ease;
 
   .person-favorite__img {

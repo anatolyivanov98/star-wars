@@ -16,7 +16,14 @@
     <Preloader v-if="isLoading"/>
 
     <div v-else class="carts">
+      <p
+          class="empty-text"
+          v-if="!filteredPeople.length"
+      >
+        Нет подходящих результатов
+      </p>
       <Person
+          v-else
           v-for="person of filteredPeople"
           :person="person"
           :key="person.name"
@@ -27,7 +34,6 @@
 </template>
 
 <script>
-// @ is an alias to /src
 
 import Preloader from "../components/Preloader";
 import Paginate from "../components/Paginate";
@@ -134,10 +140,15 @@ $grey: #cecece;
 
     .carts {
       display: flex;
-      justify-content: space-between;
+      justify-content: flex-start;
       align-items: center;
       flex-wrap: wrap;
       padding: 20px 40px;
+
+      .empty-text {
+        margin: 0 auto;
+        font-size: 24px;
+      }
     }
   }
 

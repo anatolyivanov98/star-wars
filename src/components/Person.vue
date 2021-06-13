@@ -11,8 +11,8 @@
         <p>Gender: {{ person.gender }}</p>
         <p>Homeworld: {{ homeworld.name }}</p>
       </div>
-      <button class="person__block__btn">
-        <img src="@/assets/unlike.svg" alt="" />
+      <button class="person__block__btn" @click="addFavoritePersonHandler(person, homeworld.name)">
+        <img :src="require(isFavorite ? '@/assets/like.svg' : '@/assets/unlike.svg')" alt="" />
       </button>
     </div>
   </div>
@@ -26,7 +26,8 @@ export default {
   props: ['person'],
   data() {
     return {
-      homeworld: []
+      homeworld: [],
+      favoritePeople: []
     }
   },
   computed: {
@@ -35,10 +36,39 @@ export default {
       const splitPersonUrl = this.person.url.split('/')
       const personId = splitPersonUrl[splitPersonUrl.length - 2]
       return personId
+    },
+    isFavorite() {
+      this.favoritePeople = JSON.parse(localStorage.getItem('favoritePeople')) || []
+      let flag = false;
+      this.favoritePeople.forEach(item => {
+        if (item.name.includes(this.person.name)) {
+          flag = true;
+        }
+      });
+      return flag
     }
   },
   methods: {
-    ...mapActions(['getPersonHomeworld'])
+    ...mapActions(['getPersonHomeworld']),
+    addFavoritePersonHandler(person, homeworld) {
+      this.favoritePeople = JSON.parse(localStorage.getItem('favoritePeople')) || []
+
+      let flag = false;
+      this.favoritePeople.forEach(item => {
+        if (item.name.includes(person.name)) {
+          flag = true;
+        }
+      });
+
+      if (flag) {
+        this.favoritePeople = this.favoritePeople.filter(item=> item.name !== person.name)
+        localStorage.setItem('favoritePeople', JSON.stringify(this.favoritePeople))
+      } else {
+        person.homeworld = homeworld
+        this.favoritePeople.push(person)
+        localStorage.setItem('favoritePeople', JSON.stringify(this.favoritePeople))
+      }
+    }
   },
   async created() {
     await this.getPersonHomeworld(this.person.homeworld)
@@ -54,6 +84,7 @@ $grey: #cecece;
     display: flex;
     flex-direction: column;
     margin-top: 20px;
+    margin-right: 5%;
     transition:.3s all ease;
 
     .person__img {
