@@ -125,7 +125,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$grey: #cecece;
+@import "./src/assets/scss/_variable.scss";
 
   .main {
 

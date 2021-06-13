@@ -2,7 +2,9 @@
   <header class="header">
     <nav class="header__nav">
       <router-link class="header__nav__link" to="/">Главная</router-link>
-      <router-link class="header__nav__link" :to="{name: 'Favorite'}">Избранные персонажи</router-link>
+      <router-link class="header__nav__link" :to="{name: 'Favorite'}">
+        Избранные персонажи
+      </router-link>
     </nav>
     <img class="header__logo" src="@/assets/logo.svg" alt="Логотип">
   </header>
@@ -11,12 +13,13 @@
 <script>
 
 export default {
-  name: "Header"
+  name: "Header",
 }
 </script>
 
 <style lang="scss" scoped>
-  $grey: #cecece;
+@import "./src/assets/scss/_variable.scss";
+
   .header {
     width: 100%;
     height: 70px;
@@ -43,7 +46,7 @@ export default {
       }
 
       .header__nav__link:hover {
-        box-shadow: 0 3px 0 #fecf3c;
+        box-shadow: 0 3px 0 $yellow;
         transition:.3s all ease
       }
 
@@ -58,6 +61,18 @@ export default {
     .header {
       .header__logo {
         display: none;
+      }
+
+      .header__nav {
+        width: 100%;
+
+        .header__nav__link {
+          width: 50%;
+        }
+
+        .header__nav__link:last-child {
+          border: none;
+        }
       }
     }
   }

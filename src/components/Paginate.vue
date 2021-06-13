@@ -40,7 +40,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$grey: #cecece;
+@import "./src/assets/scss/_variable.scss";
   .pagination {
     display: flex;
 
@@ -62,7 +62,7 @@ $grey: #cecece;
     }
 
     button:hover {
-      border-color:#fecf3c;
+      border-color:$yellow;
       transition:.3s all ease
     }
 

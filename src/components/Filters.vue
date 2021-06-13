@@ -49,10 +49,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$grey: #cecece;
+@import "./src/assets/scss/_variable.scss";
+
   .filters {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     flex-wrap: wrap;
 
@@ -73,16 +74,10 @@ $grey: #cecece;
         outline: none;
       }
 
-      .green__btn {
-        border: 3px solid #388e3c;
-        color: #ffffff;
-        background: #388e3c;
-      }
-
       .red__btn {
-        border: 3px solid #c62828 ;
+        border: 3px solid $red ;
         color: #ffffff;
-        background: #c62828 ;
+        background: $red ;
       }
 
       .filters__filter__name {
@@ -103,4 +98,20 @@ $grey: #cecece;
       }
     }
   }
+
+@media (max-width: 500px) {
+  .filters {
+    justify-content: flex-start;
+
+    .filters__filter {
+      padding: 10px 0;
+
+      button {
+        margin-left: 10px;
+        font-size: 16px;
+        padding: 3px 12px;
+      }
+    }
+  }
+}
 </style>
