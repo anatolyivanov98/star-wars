@@ -55,6 +55,9 @@ export default {
         .then(resp => {
           commit('setPersonHomeworld', resp.data)
         })
+        .catch(err => {
+          console.log(err)
+        })
     }
   },
   getters: {
