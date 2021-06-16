@@ -3,7 +3,7 @@
 
     <div class="toolbar">
       <Paginate
-        :prevPage="prevPage"
+        :prevPage="currentPage"
         :nextPage="nextPage"
         @prevPageHandler="prevPageHandler()"
         @nextPageHandler="nextPageHandler()"
@@ -24,7 +24,7 @@
       </p>
       <Person
           v-else
-          v-for="person of filteredPeople"
+          v-for="person of paginatedPeople()"
           :person="person"
           :key="person.name"
       />
@@ -46,8 +46,10 @@ export default {
   name: 'People',
   data() {
     return {
+      countPeople: 0,
       peopleArray: [],
       filteredPeople: [],
+      testPagArr: [],
       currentPage: 1,
       isLoading: true,
       prevPage: '',
@@ -65,23 +67,35 @@ export default {
   methods: {
     ...mapActions(['getPeople']),
     async getPeopleData() {
-      this.isLoading = true,
+      this.isLoading = true
+      const allPeople = []
+      let page = this.currentPage
       await this.getPeople(this.currentPage)
-      this.peopleArray = this.getPeopleArray
-      this.prevPage = this.getPrevPage
       this.nextPage = this.getNextPage
+
+      while (this.nextPage) {
+        await this.getPeople(page)
+        allPeople.push(this.getPeopleArray)
+        page++
+        this.nextPage = this.getNextPage
+      }
+      allPeople.forEach(arr => {
+        arr.forEach(item => {
+          this.peopleArray.push(item)
+        })
+      })
+      this.countPeople = allPeople.length
       this.filterPerson()
       this.isLoading = false
     },
     async prevPageHandler() {
-      this.currentPage = this.currentPage - 1
-      await this.getPeopleData()
+      this.currentPage--
     },
     async nextPageHandler() {
-      this.currentPage = this.currentPage + 1
-      await this.getPeopleData()
+      this.currentPage++
     },
     filterPerson(filterName, filterGender) {
+      this.currentPage = 1
       if (filterName !== undefined) {
         this.filterName = filterName
       }
@@ -113,10 +127,16 @@ export default {
       }
 
       this.filteredPeople = this.peopleArray
+    },
+    paginatedPeople() {
+      const start = (this.currentPage - 1) * 10
+      const end = this.currentPage * 10
+      this.nextPage = this.filteredPeople.length > end
+      return this.filteredPeople.slice(start, end)
     }
   },
   computed: {
-    ...mapGetters(['getPeopleArray', 'getPrevPage', 'getNextPage'])
+    ...mapGetters(['getPeopleArray', 'getNextPage'])
   },
   async mounted() {
     await this.getPeopleData()

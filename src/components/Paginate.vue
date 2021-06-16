@@ -2,8 +2,8 @@
   <div class="pagination">
     <button
         class="pagination__prev"
-        :class="{ disabled: !prevPage }"
-        :disabled="!prevPage"
+        :class="{ disabled: prevPage < 2 }"
+        :disabled="prevPage < 2"
         @click="prevPageHandler"
     >
       <img src="../assets/arrow.svg" alt="Предыдущая">

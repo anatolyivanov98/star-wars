@@ -2,12 +2,12 @@
   <div class="person-favorite">
     <img class="person-favorite__img" :src="`https://starwars-visualguide.com/assets/img/characters/${getPersonId}.jpg`" />
     <div class="person-favorite__block">
-      <div class="person-favorite__block__info">
+      <div class="person-favorite__block-info">
         <p>Name: {{ favoritePerson.name }}</p>
         <p>Gender: {{ favoritePerson.gender }}</p>
         <p>Homeworld: {{ favoritePerson.homeworld }}</p>
       </div>
-      <button class="person-favorite__block__btn" @click="removeFavoritePersonHandler">
+      <button class="person-favorite__block-btn" @click="removeFavoritePersonHandler">
         <img src="@/assets/like.svg" alt="" />
       </button>
     </div>
@@ -54,7 +54,7 @@ export default {
     transition:.3s all ease;
     width: 100%;
 
-    .person-favorite__block__info {
+    .person-favorite__block-info {
       display: flex;
       flex-direction: column;
       align-items: flex-start;
@@ -68,7 +68,7 @@ export default {
       }
     }
 
-    .person-favorite__block__btn {
+    .person-favorite__block-btn {
       border-bottom:  none;
       border-top: none;
       border-right: none;
@@ -84,7 +84,7 @@ export default {
       }
     }
 
-    .person-favorite__block__btn:hover {
+    .person-favorite__block-btn:hover {
       box-shadow: 0 1px 3px 2px $yellow;
       transition:.3s all ease;
 

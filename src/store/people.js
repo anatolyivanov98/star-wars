@@ -3,20 +3,12 @@ import axios from "axios";
 export default {
   state: {
     peopleArray: [],
-    prevPage: false,
     nextPage: true,
     homeworld: []
   },
   mutations: {
     setPeopleArray(state, array) {
       state.peopleArray = array
-    },
-    setPrevPage(state, prevPage) {
-      if (prevPage) {
-        state.prevPage = true
-      } else {
-        state.prevPage = false
-      }
     },
     setNextPage(state, nextPage) {
       if (nextPage) {
@@ -63,9 +55,6 @@ export default {
   getters: {
     getPeopleArray(state) {
       return state.peopleArray
-    },
-    getPrevPage(state) {
-      return state.prevPage
     },
     getNextPage(state) {
       return state.nextPage

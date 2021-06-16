@@ -2,7 +2,7 @@
   <div class="filters">
     <div class="filters__filter">
       <input
-          class="filters__filter__name"
+          class="filters__filter-name"
           type="text"
           placeholder="Введите имя..."
           v-model="filterName"
@@ -10,7 +10,7 @@
       >
     </div>
     <div class="filters__filter">
-      <select class="filters__filter__gender"
+      <select class="filters__filter-gender"
               v-model="filterGender"
               @change="filterPersonHandler"
       >
@@ -21,7 +21,7 @@
         <option value="none">None</option>
         <option value="hermaphrodite">Hermaphrodite</option>
       </select>
-      <button class="red__btn" @click="resetFilterPersonHandler">Сбросить фильтры</button>
+      <button class="red-btn" @click="resetFilterPersonHandler">Сбросить фильтры</button>
     </div>
   </div>
 </template>
@@ -74,13 +74,13 @@ export default {
         outline: none;
       }
 
-      .red__btn {
+      .red-btn {
         border: 3px solid $red ;
         color: #ffffff;
         background: $red ;
       }
 
-      .filters__filter__name {
+      .filters__filter-name {
         font-size: 18px;
         color: #000;
         padding: 10px;
@@ -88,7 +88,7 @@ export default {
         border: 3px solid $grey;
       }
 
-      .filters__filter__gender {
+      .filters__filter-gender {
         font-size: 18px;
         color: #000;
         padding: 10px;

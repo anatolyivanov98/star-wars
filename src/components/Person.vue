@@ -6,12 +6,12 @@
         :alt="`${person.name}`"
     />
     <div class="person__block">
-      <div class="person__block__info">
+      <div class="person__block-info">
         <p>Name: {{ person.name }}</p>
         <p>Gender: {{ person.gender }}</p>
         <p>Homeworld: {{ homeworld.name }}</p>
       </div>
-      <button class="person__block__btn" @click="addFavoritePersonHandler(person, homeworld.name)">
+      <button class="person__block-btn" @click="addFavoritePersonHandler(person, homeworld.name)">
         <img :src="require(isFavorite ? '@/assets/like.svg' : '@/assets/unlike.svg')" alt="" />
       </button>
     </div>
@@ -98,7 +98,7 @@ export default {
       transition:.3s all ease;
       width: 100%;
 
-      .person__block__info {
+      .person__block-info {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
@@ -112,7 +112,7 @@ export default {
         }
       }
 
-      .person__block__btn {
+      .person__block-btn {
         border-bottom:  none;
         border-top: none;
         border-right: none;
@@ -128,7 +128,7 @@ export default {
         }
       }
 
-      .person__block__btn:hover {
+      .person__block-btn:hover {
         box-shadow: 0 1px 3px 2px $yellow;
         transition:.3s all ease;
 

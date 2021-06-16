@@ -1,8 +1,8 @@
 <template>
   <header class="header">
     <nav class="header__nav">
-      <router-link class="header__nav__link" to="/">Главная</router-link>
-      <router-link class="header__nav__link" :to="{name: 'Favorite'}">
+      <router-link class="header__nav-link" to="/">Главная</router-link>
+      <router-link class="header__nav-link" :to="{name: 'Favorite'}">
         Избранные персонажи
       </router-link>
     </nav>
@@ -31,7 +31,7 @@ export default {
       display: flex;
       align-items: center;
 
-      .header__nav__link {
+      .header__nav-link {
         font-size: 18px;
         text-decoration: none;
         color: #000;
@@ -45,7 +45,7 @@ export default {
         transition:.3s all ease
       }
 
-      .header__nav__link:hover {
+      .header__nav-link:hover {
         box-shadow: 0 3px 0 $yellow;
         transition:.3s all ease
       }
@@ -66,11 +66,11 @@ export default {
       .header__nav {
         width: 100%;
 
-        .header__nav__link {
+        .header__nav-link {
           width: 50%;
         }
 
-        .header__nav__link:last-child {
+        .header__nav-link:last-child {
           border: none;
         }
       }
