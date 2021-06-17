@@ -21,9 +21,12 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 
+import peopleMixin from '@/mixins/people.mixin'
+
 export default {
   name: "Person",
   props: ['person'],
+  mixins: [peopleMixin],
   data() {
     return {
       homeworld: [],
@@ -33,12 +36,10 @@ export default {
   computed: {
     ...mapGetters(['getHomeworld']),
     getPersonId() {
-      const splitPersonUrl = this.person.url.split('/')
-      const personId = splitPersonUrl[splitPersonUrl.length - 2]
-      return personId
+      return this.personIdMixin(this.person)
     },
     isFavorite() {
-      this.favoritePeople = JSON.parse(localStorage.getItem('favoritePeople')) || []
+      this.favoritePeople = this.getFavoritePeopleFromLocalStorageMixin()
       let flag = false;
       this.favoritePeople.forEach(item => {
         if (item.name.includes(this.person.name)) {
@@ -51,9 +52,9 @@ export default {
   methods: {
     ...mapActions(['getPersonHomeworld']),
     addFavoritePersonHandler(person, homeworld) {
-      this.favoritePeople = JSON.parse(localStorage.getItem('favoritePeople')) || []
-
+      this.favoritePeople = this.getFavoritePeopleFromLocalStorageMixin()
       let flag = false;
+
       this.favoritePeople.forEach(item => {
         if (item.name.includes(person.name)) {
           flag = true;
@@ -61,8 +62,8 @@ export default {
       });
 
       if (flag) {
-        this.favoritePeople = this.favoritePeople.filter(item=> item.name !== person.name)
-        localStorage.setItem('favoritePeople', JSON.stringify(this.favoritePeople))
+        this.deleteFavoritePersonMixin(this.favoritePeople, person.name)
+
       } else {
         person.homeworld = homeworld
         this.favoritePeople.push(person)
@@ -78,67 +79,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "./src/assets/scss/_variable.scss";
+@import "./src/assets/scss/_variable";
+@import "./src/assets/scss/mixins";
 
   .person {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 20px 48px;
-    transition:.3s all ease;
-
-    .person__img {
-      max-width: 270px;
-    }
-
-    .person__block {
-      display: flex;
-      justify-content: space-between;
-      box-shadow: 0 4px 6px 2px $grey;
-      transition:.3s all ease;
-      width: 100%;
-
-      .person__block-info {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        width: 100%;
-        padding: 5px 10px;
-
-        p {
-          margin: 0;
-          padding: 0;
-          font-size: 18px
-        }
-      }
-
-      .person__block-btn {
-        border-bottom:  none;
-        border-top: none;
-        border-right: none;
-        border-left: 2px solid $grey;
-        background: #fff;
-        cursor: pointer;
-        outline: none;
-        transition:.3s all ease;
-
-        img {
-          width: 30px;
-          transition:.3s all ease;
-        }
-      }
-
-      .person__block-btn:hover {
-        box-shadow: 0 1px 3px 2px $yellow;
-        transition:.3s all ease;
-
-        img {
-          width: 32px;
-          transition:.3s all ease;
-        }
-      }
-
-    }
+    @include person(20px 48px, 270px);
   }
 
   .person:hover {
@@ -151,29 +96,27 @@ export default {
     }
   }
 
-  @media (max-width: 500px) {
-    .person {
-      .person__img {
-        max-width: 250px;
-      }
-    }
-  }
-
 @media (max-width: 1440px) {
   .person {
-    margin: 20px 34px;
+    @include person(20px 34px, 270px);
   }
 }
 
 @media (max-width: 1366px) {
   .person {
-    margin: 20px 25px;
+    @include person(20px 25px, 270px);
   }
 }
 
 @media (max-width: 768px) {
   .person {
-    margin: 20px auto;
+    @include person(20px auto, 270px);
+  }
+}
+
+@media (max-width: 500px) {
+  .person {
+    @include person(20px auto, 250px);
   }
 }
 </style>

@@ -1,0 +1,101 @@
+@mixin toolbar($justify-content, $padding) {
+  justify-content: $justify-content;
+  display: flex;
+  align-items: center;
+  padding: $padding;
+  box-shadow: 0 5px 5px $grey;
+  flex-wrap: wrap;
+}
+
+@mixin carts($padding) {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: $padding;
+
+  .empty-text {
+    margin: 0 auto;
+    font-size: 24px;
+  }
+}
+
+@mixin person($margin, $img-size) {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: $margin;
+  transition:.3s all ease;
+
+  &__img {
+    max-width: $img-size;
+  }
+
+  &__block {
+    display: flex;
+    justify-content: space-between;
+    box-shadow: 0 4px 6px 2px $grey;
+    transition:.3s all ease;
+    width: 100%;
+
+    &-info {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      width: 100%;
+      padding: 5px 10px;
+
+      p {
+        margin: 0;
+        padding: 0;
+        font-size: 18px
+      }
+    }
+
+    &-btn {
+      border-bottom:  none;
+      border-top: none;
+      border-right: none;
+      border-left: 2px solid $grey;
+      background: #fff;
+      cursor: pointer;
+      outline: none;
+      transition:.3s all ease;
+
+      img {
+        width: 30px;
+        transition:.3s all ease;
+      }
+    }
+
+    &-btn:hover {
+      box-shadow: 0 1px 3px 2px $yellow;
+      transition:.3s all ease;
+
+      img {
+        width: 32px;
+        transition:.3s all ease;
+      }
+    }
+
+  }
+}
+
+@mixin filter-field {
+  font-size: 18px;
+  color: #000;
+  padding: 10px;
+  outline: none;
+  border: 3px solid $grey;
+  background: #ffffff;
+}
+
+@mixin btn($padding) {
+  border: 3px solid $grey;
+  background: #ffffff;
+  font-size: 18px;
+  color: #000;
+  cursor: pointer;
+  outline: none;
+  padding: $padding;
+}

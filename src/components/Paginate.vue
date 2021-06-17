@@ -40,21 +40,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "./src/assets/scss/_variable.scss";
+@import "./src/assets/scss/_variable";
+@import "./src/assets/scss/mixins";
+
   .pagination {
     display: flex;
 
     button {
-      border: 3px solid $grey;
-      background: #fff;
-      font-size: 18px;
-      outline: none;
+      @include btn(8px 20px);
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 8px 20px;
       transition:.3s all ease;
-      cursor: pointer;
 
       img {
         width: 35px;
@@ -82,7 +79,7 @@ export default {
     .pagination {
 
       button {
-        padding: 6px 10px;
+        @include btn(6px 10px);
 
         img {
           width: 20px;

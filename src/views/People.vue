@@ -40,16 +40,16 @@ import Paginate from "../components/Paginate";
 import Filters from "../components/Filters";
 import Person from "../components/Person";
 
+import peopleMixin from '@/mixins/people.mixin'
+
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'People',
   data() {
     return {
-      countPeople: 0,
       peopleArray: [],
       filteredPeople: [],
-      testPagArr: [],
       currentPage: 1,
       isLoading: true,
       prevPage: '',
@@ -64,6 +64,7 @@ export default {
     Preloader,
     Paginate
   },
+  mixins: [peopleMixin],
   methods: {
     ...mapActions(['getPeople']),
     async getPeopleData() {
@@ -71,20 +72,21 @@ export default {
       const allPeople = []
       let page = this.currentPage
       await this.getPeople(this.currentPage)
-      this.nextPage = this.getNextPage
+      let nextPage = this.getNextPage
 
-      while (this.nextPage) {
+      while (nextPage) {
         await this.getPeople(page)
         allPeople.push(this.getPeopleArray)
         page++
-        this.nextPage = this.getNextPage
+        nextPage = this.getNextPage
       }
+
       allPeople.forEach(arr => {
         arr.forEach(item => {
           this.peopleArray.push(item)
         })
       })
-      this.countPeople = allPeople.length
+
       this.filterPerson()
       this.isLoading = false
     },
@@ -103,30 +105,7 @@ export default {
         this.filterGender = filterGender
       }
 
-      if (this.filterName === '' && this.filterGender === 'all') {
-        this.filteredPeople = this.peopleArray
-        return
-      }
-
-      if (this.filterName !== '' && this.filterGender === 'all') {
-        this.filteredPeople = this.peopleArray.filter(person => person.name.toLowerCase().includes(this.filterName.toLowerCase()))
-        return
-      }
-
-      if (this.filterName === '' && this.filterGender !== 'all' && this.filterGender !== '') {
-        this.filteredPeople = this.peopleArray.filter(person => person.gender === this.filterGender)
-        return
-      }
-
-      if (this.filterName && this.filterGender !== 'all') {
-        this.filteredPeople = this.peopleArray
-            .filter(person => person.gender === this.filterGender)
-            .filter(person => person.name.toLowerCase().includes(this.filterName.toLowerCase()))
-
-        return
-      }
-
-      this.filteredPeople = this.peopleArray
+      this.filteredPeople = this.filterPeopleMixin(this.filterName, this.filterGender, this.peopleArray)
     },
     paginatedPeople() {
       const start = (this.currentPage - 1) * 10
@@ -145,40 +124,27 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "./src/assets/scss/_variable.scss";
+@import "./src/assets/scss/_variable";
+@import "./src/assets/scss/mixins";
 
   .main {
 
     .toolbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px 40px;
-      box-shadow: 0 5px 5px $grey;
-      flex-wrap: wrap;
+      @include toolbar(space-between, 20px 40px);
     }
 
     .carts {
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
-      flex-wrap: wrap;
-      padding: 20px 40px;
-
-      .empty-text {
-        margin: 0 auto;
-        font-size: 24px;
-      }
+      @include carts(20px 40px);
     }
   }
 
   @media (max-width: 500px) {
     .main {
       .toolbar {
-        padding: 20px;
+        @include toolbar(space-between, 20px);
       }
       .carts {
-        padding: 20px;
+        @include carts(20px);
       }
     }
   }

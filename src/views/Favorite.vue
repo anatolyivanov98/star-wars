@@ -32,12 +32,16 @@
 <script>
 import FavoritePerson from "../components/FavoritePerson";
 import Filters from "../components/Filters";
+
+import peopleMixin from '@/mixins/people.mixin'
+
 export default {
   name: "Favorite",
   components: {
     FavoritePerson,
     Filters
   },
+  mixins: [peopleMixin],
   data() {
     return {
       favoritePeopleArray: [],
@@ -47,15 +51,12 @@ export default {
     }
   },
   mounted() {
-    this.favoritePeopleArray = JSON.parse(localStorage.getItem('favoritePeople')) || []
+    this.favoritePeopleArray = this.getFavoritePeopleFromLocalStorageMixin()
     this.filterPerson()
   },
   methods: {
     removeFavoritePerson(favoritePerson) {
-      this.favoritePeopleArray = this.favoritePeopleArray.filter(item=> item.name !== favoritePerson.name)
-      console.log(this.favoritePeopleArray)
-      localStorage.setItem('favoritePeople', JSON.stringify(this.favoritePeopleArray))
-      // this.favoritePeopleArray = JSON.parse(localStorage.getItem('favoritePeople')) || []
+      this.favoritePeopleArray = this.deleteFavoritePersonMixin(this.favoritePeopleArray, favoritePerson.name)
       this.filteredFavoritePeopleArray = this.favoritePeopleArray
       this.filterPerson()
     },
@@ -66,35 +67,8 @@ export default {
       if (filterGender !== undefined) {
         this.filterGender = filterGender
       }
-
-      if (this.filterName === '' && this.filterGender === 'all') {
-        this.filteredFavoritePeopleArray = this.favoritePeopleArray
-        return
-      }
-
-      if (this.filterName !== '' && this.filterGender === 'all') {
-        this.filteredFavoritePeopleArray = this.favoritePeopleArray.filter(
-            person => person.name.toLowerCase().includes(this.filterName.toLowerCase())
-        )
-        return
-      }
-
-      if (this.filterName === '' && this.filterGender !== 'all' && this.filterGender !== '') {
-        this.filteredFavoritePeopleArray = this.favoritePeopleArray.filter(
-            person => person.gender === this.filterGender
-        )
-        return
-      }
-
-      if (this.filterName && this.filterGender !== 'all') {
-        this.filteredFavoritePeopleArray = this.favoritePeopleArray
-            .filter(person => person.gender === this.filterGender)
-            .filter(person => person.name.toLowerCase().includes(this.filterName.toLowerCase()))
-
-        return
-      }
-
-      this.filteredFavoritePeopleArray = this.favoritePeopleArray
+      this.filteredFavoritePeopleArray = this.filterPeopleMixin(this.filterName, this.filterGender,
+          this.favoritePeopleArray)
     }
   }
 
@@ -102,38 +76,27 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "./src/assets/scss/_variable.scss";
+@import "./src/assets/scss/_variable";
+@import "./src/assets/scss/mixins";
 
   .main-favorite{
 
     .favorite-toolbar {
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      padding: 20px 40px;
-      box-shadow: 0 5px 5px $grey;
-      flex-wrap: wrap;
+      @include toolbar(flex-end, 20px 40px);
     }
 
     .favorite-carts {
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
-      flex-wrap: wrap;
-      padding: 20px 40px;
-
-      .empty-text {
-        margin: 0 auto;
-        font-size: 24px;
-      }
+      @include carts(20px 40px);
     }
   }
 
   @media (max-width: 500px) {
     .main-favorite {
-
+      .favorite-toolbar {
+        @include toolbar(flex-end, 20px);
+      }
       .favorite-carts {
-        padding: 20px;
+        @include carts(20px);
       }
     }
   }

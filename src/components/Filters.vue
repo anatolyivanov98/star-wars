@@ -49,7 +49,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "./src/assets/scss/_variable.scss";
+@import "./src/assets/scss/_variable";
+@import "./src/assets/scss/mixins";
 
   .filters {
     display: flex;
@@ -64,14 +65,8 @@ export default {
       padding: 10px 0 10px 20px;
 
       button {
-        border: 3px solid $grey;
-        padding: 10px 20px;
-        background: #ffffff;
-        font-size: 18px;
-        color: #000;
+        @include btn(10px 20px);
         margin-left: 20px;
-        cursor: pointer;
-        outline: none;
       }
 
       .red-btn {
@@ -80,36 +75,22 @@ export default {
         background: $red ;
       }
 
-      .filters__filter-name {
-        font-size: 18px;
-        color: #000;
-        padding: 10px;
-        outline: none;
-        border: 3px solid $grey;
-      }
-
-      .filters__filter-gender {
-        font-size: 18px;
-        color: #000;
-        padding: 10px;
-        outline: none;
-        border: 3px solid $grey;
-        background: #ffffff;
+      .filters__filter-name, .filters__filter-gender {
+        @include filter-field;
       }
     }
   }
 
 @media (max-width: 500px) {
   .filters {
-    justify-content: flex-start;
 
     .filters__filter {
       padding: 10px 0;
 
       button {
+        @include btn(3px 12px);
         margin-left: 10px;
         font-size: 16px;
-        padding: 3px 12px;
       }
     }
   }

@@ -32,7 +32,6 @@ export default {
       })
       .then(resp => {
         commit('setPeopleArray', resp.data.results)
-        commit('setPrevPage', resp.data.previous)
         commit('setNextPage', resp.data.next)
       })
       .catch(err => {
